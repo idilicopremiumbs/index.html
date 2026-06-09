@@ -154,7 +154,7 @@ placeholder="Nombre completo"
 <input
 type="tel"
 id="telefono"
-placeholder="Número de teléfono"
+placeholder="Celular (3001234567)"
 >
 
 <select id="barbero">
@@ -235,15 +235,13 @@ alert("Por favor complete todos los campos.");
 return;
 }
 
-/* Validación Colombia */
-
 const telefonoLimpio =
 telefono.replace(/\D/g,'');
 
 if(!/^3\d{9}$/.test(telefonoLimpio)){
 
 alert(
-"Ingrese un número celular colombiano válido. Ejemplo: 3001234567"
+"Ingrese un número celular colombiano válido.\nEjemplo: 3001234567"
 );
 
 return;
@@ -255,19 +253,24 @@ const respuesta = await fetch(
 URL_SCRIPT,
 {
 method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
 body:JSON.stringify({
-nombre,
+nombre:nombre,
 telefono:telefonoLimpio,
-barbero,
-servicio,
-fecha,
-hora
+barbero:barbero,
+servicio:servicio,
+fecha:fecha,
+hora:hora
 })
 }
 );
 
 const resultado =
 await respuesta.json();
+
+console.log(resultado);
 
 if(resultado.resultado === "ok"){
 
@@ -277,7 +280,13 @@ document.getElementById("mensaje").innerHTML = `
 ✅ <strong>Cita confirmada exitosamente</strong><br><br>
 Gracias por elegir <b>Idílico Premium Barbershop</b>.<br>
 Tu reserva fue registrada correctamente.<br><br>
-Te esperamos el <b>${fecha}</b> a las <b>${hora}</b>.
+
+<b>Nombre:</b> ${nombre}<br>
+<b>Teléfono:</b> ${telefonoLimpio}<br>
+<b>Barbero:</b> ${barbero}<br>
+<b>Servicio:</b> ${servicio}<br>
+<b>Fecha:</b> ${fecha}<br>
+<b>Hora:</b> ${hora}
 `;
 
 document.getElementById("nombre").value="";
@@ -289,15 +298,17 @@ document.getElementById("hora").value="";
 
 }else{
 
-alert("No fue posible registrar la cita.");
+alert("Error: " + (resultado.mensaje || "No se pudo guardar la cita"));
 
 }
 
 }catch(error){
 
-alert("Error de conexión con el servidor.");
-
 console.error(error);
+
+alert(
+"Error de conexión con Google Apps Script.\nRevise que la implementación esté publicada."
+);
 
 }
 
