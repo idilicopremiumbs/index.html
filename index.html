@@ -3,204 +3,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Barbería Elite - Reserva tu cita</title>
+
+<title>Idílico Premium Barbershop</title>
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
 }
 
 body{
-    background:#111;
-    color:#fff;
+background:#111;
+color:white;
 }
 
 header{
-    background:#000;
-    text-align:center;
-    padding:40px 20px;
+text-align:center;
+padding:30px 20px;
+background:#000;
 }
 
-header h1{
-    font-size:2.5rem;
+.logo{
+width:220px;
+max-width:90%;
+border-radius:15px;
 }
 
-header p{
-    color:#bbb;
-    margin-top:10px;
+.titulo{
+font-size:2rem;
+color:#d4af37;
+margin-top:15px;
+}
+
+.subtitulo{
+margin-top:10px;
+color:#ccc;
 }
 
 .hero{
-    text-align:center;
-    padding:50px 20px;
-}
-
-.hero h2{
-    margin-bottom:15px;
+width:100%;
+max-height:500px;
+object-fit:cover;
 }
 
 .container{
-    max-width:600px;
-    margin:20px auto 50px;
-    background:#1c1c1c;
-    padding:25px;
-    border-radius:15px;
+max-width:700px;
+margin:auto;
+padding:20px;
 }
 
-label{
-    display:block;
-    margin-top:15px;
+.card{
+background:#1b1b1b;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+box-shadow:0 0 15px rgba(212,175,55,.2);
 }
 
-input, select{
-    width:100%;
-    padding:12px;
-    margin-top:5px;
-    border:none;
-    border-radius:8px;
+h2{
+color:#d4af37;
+margin-bottom:15px;
+text-align:center;
+}
+
+input,
+select{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
 }
 
 button{
-    width:100%;
-    padding:15px;
-    margin-top:20px;
-    border:none;
-    border-radius:8px;
-    background:#d4af37;
-    color:#000;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
+width:100%;
+padding:15px;
+background:#d4af37;
+color:black;
+font-weight:bold;
+border:none;
+border-radius:10px;
+font-size:17px;
+cursor:pointer;
 }
 
 button:hover{
-    opacity:0.9;
+opacity:.9;
 }
 
-#confirmacion{
-    display:none;
-    text-align:center;
+.galeria img{
+width:100%;
+border-radius:15px;
+margin-top:15px;
 }
 
-.whatsapp{
-    background:#25D366;
-    color:white;
+.contacto{
+text-align:center;
+margin-top:25px;
+line-height:2;
 }
 
-footer{
-    text-align:center;
-    padding:20px;
-    color:#888;
+.exito{
+display:none;
+background:#1f8f4d;
+padding:15px;
+border-radius:10px;
+margin-top:15px;
+text-align:center;
 }
 </style>
 </head>
+
 <body>
 
 <header>
-    <h1>💈 Idilico Premium Barbershop </h1>
-    <p>Cortes modernos, barba y estilo profesional</p>
+
+<img src="logo.jpg" class="logo">
+
+<h1 class="titulo">Idílico Premium Barbershop</h1>
+
+<p class="subtitulo">
+Agenda tu cita de forma rápida y segura
+</p>
+
 </header>
 
-<section class="hero">
-    <h2>Reserva tu cita online</h2>
-    <p>Selecciona tu servicio y horario disponible.</p>
-</section>
+<img src="barberia.jpg" class="hero">
 
-<div class="container" id="formulario">
+<div class="container">
 
-    <label>Nombre completo</label>
-    <input type="text" id="nombre">
+<div class="card">
 
-    <label>Servicio</label>
-    <select id="servicio">
-        <option>Corte clásico</option>
-        <option>Fade</option>
-        <option>Barba</option>
-        <option>Corte + Barba</option>
-    </select>
+<h2>Reserva tu cita</h2>
 
-    <label>Fecha</label>
-    <input type="date" id="fecha">
+<input type="text" id="nombre" placeholder="Nombre completo">
 
-    <label>Hora</label>
-    <input type="time" id="hora">
+<select id="barbero">
+<option value="">Seleccione un barbero</option>
+<option>Jesús</option>
+<option>Mateo</option>
+<option>Carlos</option>
+</select>
 
-    <button onclick="reservar()">
-        Confirmar cita
-    </button>
+<select id="servicio">
+<option value="">Seleccione un servicio</option>
+<option>Clásico</option>
+<option>Cejas</option>
+<option>Barba + Cejas</option>
+</select>
+
+<input type="date" id="fecha">
+
+<input type="time" id="hora">
+
+<button onclick="reservar()">
+Confirmar cita
+</button>
+
+<div id="mensaje" class="exito">
+✅ Tu cita fue registrada correctamente.
+</div>
 
 </div>
 
-<div class="container" id="confirmacion">
+<div class="card galeria">
 
-    <h2>✅ Cita Confirmada</h2>
+<h2>Nuestros Servicios</h2>
 
-    <br>
-
-    <p><strong>Cliente:</strong> <span id="cNombre"></span></p>
-    <p><strong>Servicio:</strong> <span id="cServicio"></span></p>
-    <p><strong>Fecha:</strong> <span id="cFecha"></span></p>
-    <p><strong>Hora:</strong> <span id="cHora"></span></p>
-
-    <br>
-
-    <a id="whatsappBtn" target="_blank">
-        <button class="whatsapp">
-            Compartir por WhatsApp
-        </button>
-    </a>
+<img src="servicios.jpg">
 
 </div>
 
-<footer>
-    © 2026 Idilico Premium Barbershop
-</footer>
+<div class="contacto">
+
+<h2>Contacto</h2>
+
+<p>📱 321 497 57 51</p>
+
+<p>📸 Instagram: @idilicopremium</p>
+
+</div>
+
+</div>
 
 <script>
 
-function reservar(){
+async function reservar(){
 
-    let nombre = document.getElementById("nombre").value;
-    let servicio = document.getElementById("servicio").value;
-    let fecha = document.getElementById("fecha").value;
-    let hora = document.getElementById("hora").value;
-fetch("https://script.google.com/macros/s/AKfycbwnPyKG_VF5cuKqVhbq6U7VcPBqmlIIp_ealwFqIgOmespOxk_1k2f6NAJ7AknR2fM/exec", {
-  method: "POST",
-  body: JSON.stringify({
-    nombre: nombre,
-    servicio: servicio,
-    fecha: fecha,
-    hora: hora
-  })
+const nombre =
+document.getElementById("nombre").value;
+
+const barbero =
+document.getElementById("barbero").value;
+
+const servicio =
+document.getElementById("servicio").value;
+
+const fecha =
+document.getElementById("fecha").value;
+
+const hora =
+document.getElementById("hora").value;
+
+if(!nombre || !barbero || !servicio || !fecha || !hora){
+
+alert("Complete todos los campos");
+
+return;
+}
+
+try{
+
+await fetch(
+"https://script.google.com/macros/s/AKfycbwnPyKG_VF5cuKqVhbq6U7VcPBqmlIIp_ealwFqIgOmespOxk_1k2f6NAJ7AknR2fM/exec",
+{
+method:"POST",
+body:JSON.stringify({
+nombre:nombre,
+barbero:barbero,
+servicio:servicio,
+fecha:fecha,
+hora:hora
 })
-.then(() => console.log("Cita guardada"))
-.catch(error => console.error(error));
-    if(nombre === "" || fecha === "" || hora === ""){
-        alert("Completa todos los campos.");
-        return;
-    }
+}
+);
 
-    document.getElementById("cNombre").textContent = nombre;
-    document.getElementById("cServicio").textContent = servicio;
-    document.getElementById("cFecha").textContent = fecha;
-    document.getElementById("cHora").textContent = hora;
+document.getElementById("mensaje").style.display="block";
 
-    let mensaje =
-`💈 Cita Confirmada
+document.getElementById("nombre").value="";
+document.getElementById("barbero").value="";
+document.getElementById("servicio").value="";
+document.getElementById("fecha").value="";
+document.getElementById("hora").value="";
 
-Cliente: ${nombre}
-Servicio: ${servicio}
-Fecha: ${fecha}
-Hora: ${hora}`;
+}catch(error){
 
-    document.getElementById("whatsappBtn").href =
-        "https://wa.me/?text=" + encodeURIComponent(mensaje);
+alert("Error al guardar la cita");
 
-    document.getElementById("formulario").style.display = "none";
-    document.getElementById("confirmacion").style.display = "block";
+console.error(error);
+
+}
+
 }
 
 </script>
