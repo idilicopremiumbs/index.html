@@ -7,11 +7,12 @@
 <title>Idílico Premium Barbershop</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
@@ -20,9 +21,9 @@ color:white;
 }
 
 header{
-text-align:center;
-padding:30px 20px;
 background:#000;
+padding:30px;
+text-align:center;
 }
 
 .logo{
@@ -38,8 +39,8 @@ margin-top:15px;
 }
 
 .subtitulo{
-margin-top:10px;
 color:#ccc;
+margin-top:10px;
 }
 
 .hero{
@@ -56,16 +57,16 @@ padding:20px;
 
 .card{
 background:#1b1b1b;
-padding:20px;
+padding:25px;
 border-radius:15px;
 margin-top:20px;
 box-shadow:0 0 15px rgba(212,175,55,.2);
 }
 
 h2{
-color:#d4af37;
-margin-bottom:15px;
 text-align:center;
+color:#d4af37;
+margin-bottom:20px;
 }
 
 input,
@@ -83,10 +84,10 @@ width:100%;
 padding:15px;
 background:#d4af37;
 color:black;
+font-size:17px;
 font-weight:bold;
 border:none;
 border-radius:10px;
-font-size:17px;
 cursor:pointer;
 }
 
@@ -97,7 +98,6 @@ opacity:.9;
 .galeria img{
 width:100%;
 border-radius:15px;
-margin-top:15px;
 }
 
 .contacto{
@@ -108,12 +108,16 @@ line-height:2;
 
 .exito{
 display:none;
-background:#1f8f4d;
-padding:15px;
+background:#0f5132;
+border:1px solid #198754;
+padding:20px;
 border-radius:10px;
 margin-top:15px;
 text-align:center;
+font-size:15px;
+line-height:1.6;
 }
+
 </style>
 </head>
 
@@ -123,7 +127,9 @@ text-align:center;
 
 <img src="logo.jpg" class="logo">
 
-<h1 class="titulo">Idílico Premium Barbershop</h1>
+<h1 class="titulo">
+Idílico Premium Barbershop
+</h1>
 
 <p class="subtitulo">
 Agenda tu cita de forma rápida y segura
@@ -139,8 +145,18 @@ Agenda tu cita de forma rápida y segura
 
 <h2>Reserva tu cita</h2>
 
-<input type="text" id="nombre" placeholder="Nombre completo">
-<input type="tel" id="telefono" placeholder="Número de teléfono">
+<input
+type="text"
+id="nombre"
+placeholder="Nombre completo"
+>
+
+<input
+type="tel"
+id="telefono"
+placeholder="Número de teléfono"
+>
+
 <select id="barbero">
 <option value="">Seleccione un barbero</option>
 <option>Jesús</option>
@@ -163,9 +179,7 @@ Agenda tu cita de forma rápida y segura
 Confirmar cita
 </button>
 
-<div id="mensaje" class="exito">
-✅ Tu cita fue registrada correctamente.
-</div>
+<div id="mensaje" class="exito"></div>
 
 </div>
 
@@ -191,10 +205,16 @@ Confirmar cita
 
 <script>
 
+const URL_SCRIPT =
+"https://script.google.com/macros/s/AKfycbxFic8w-IFJrEg4FWBGJlHOWbFB__eD1yJHQoH4JwIQGlpfPcnE9eAbN-c5PEpI_4w/exec";
+
 async function reservar(){
 
 const nombre =
-document.getElementById("nombre").value;
+document.getElementById("nombre").value.trim();
+
+const telefono =
+document.getElementById("telefono").value.trim();
 
 const barbero =
 document.getElementById("barbero").value;
@@ -208,40 +228,74 @@ document.getElementById("fecha").value;
 const hora =
 document.getElementById("hora").value;
 
-if(!nombre || !barbero || !servicio || !fecha || !hora){
+if(!nombre || !telefono || !barbero || !servicio || !fecha || !hora){
 
-alert("Complete todos los campos");
+alert("Por favor complete todos los campos.");
+
+return;
+}
+
+/* Validación Colombia */
+
+const telefonoLimpio =
+telefono.replace(/\D/g,'');
+
+if(!/^3\d{9}$/.test(telefonoLimpio)){
+
+alert(
+"Ingrese un número celular colombiano válido. Ejemplo: 3001234567"
+);
 
 return;
 }
 
 try{
 
-await fetch(
-"https://script.google.com/macros/s/AKfycbwxddpRUdhBVxmfV2ivtHJqiNXocp4kI4gMzkSl8xo8mQqVtx-ji4nQgSmWfvu5Eh4/exec",
+const respuesta = await fetch(
+URL_SCRIPT,
 {
 method:"POST",
 body:JSON.stringify({
-nombre:nombre,
-barbero:barbero,
-servicio:servicio,
-fecha:fecha,
-hora:hora
+nombre,
+telefono:telefonoLimpio,
+barbero,
+servicio,
+fecha,
+hora
 })
 }
 );
 
+const resultado =
+await respuesta.json();
+
+if(resultado.resultado === "ok"){
+
 document.getElementById("mensaje").style.display="block";
 
+document.getElementById("mensaje").innerHTML = `
+✅ <strong>Cita confirmada exitosamente</strong><br><br>
+Gracias por elegir <b>Idílico Premium Barbershop</b>.<br>
+Tu reserva fue registrada correctamente.<br><br>
+Te esperamos el <b>${fecha}</b> a las <b>${hora}</b>.
+`;
+
 document.getElementById("nombre").value="";
+document.getElementById("telefono").value="";
 document.getElementById("barbero").value="";
 document.getElementById("servicio").value="";
 document.getElementById("fecha").value="";
 document.getElementById("hora").value="";
 
+}else{
+
+alert("No fue posible registrar la cita.");
+
+}
+
 }catch(error){
 
-alert("Error al guardar la cita");
+alert("Error de conexión con el servidor.");
 
 console.error(error);
 
