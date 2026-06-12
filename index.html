@@ -302,13 +302,15 @@ alert("Error: " + (resultado.mensaje || "No se pudo guardar la cita"));
 
 }
 
-}catch(error){
+catch(error){
 
 console.error(error);
 
 alert(
-"Error de conexión con Google Apps Script.\nRevise que la implementación esté publicada."
+"ERROR REAL:\n\n" + error
 );
+
+}
 
 }
 
